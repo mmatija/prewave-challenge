@@ -1,3 +1,11 @@
 package com.challenge.prewave.prewave_challenge.models
 
-data class Edge(val fromNode: String, val toNode: String)
+import jakarta.validation.constraints.NotBlank
+
+class Edge(
+    @field:NotBlank(message = "fromNode must be set")
+    val fromNode: String?,
+
+    @field:NotBlank(message = "toNode must be set")
+    val toNode: String?
+)

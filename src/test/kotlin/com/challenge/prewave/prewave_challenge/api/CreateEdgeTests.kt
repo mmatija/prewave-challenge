@@ -22,31 +22,56 @@ class CreateEdgeTests(@Autowired val restTemplate: TestRestTemplate) {
 
     @Test
     fun `Returns status code 200`() {
-        val edge = Edge(fromNode = "1", toNode = "2")
-        createEdge(edge).andExpect {
+        val body = edgeAsJson(fromNode = "1", toNode = "2")
+        sendPostRequest(body).andExpect {
             status { isOk() }
         }
     }
 
     @Test
     fun `Returns created edge`() {
-        val edge = Edge(fromNode = "1", toNode = "2")
-        createEdge(edge).andExpect {
-            content { json(toJson(edge)) }
+        val body = edgeAsJson(fromNode =  "1",  toNode = "2")
+        sendPostRequest(body).andExpect {
+            content { json(body) }
         }
     }
 
-    fun createEdge(edge: Edge): ResultActionsDsl {
-        val body = toJson(edge)
+    @Test
+    fun `Returns bad request when fromNode value is missing`() {
+        val body = """{"fromNode": "1"}"""
+        sendPostRequest(body).andExpect {
+            status { isBadRequest() }
+        }
+    }
+
+    @Test
+    fun `Returns error message when fromNode is not set`() {
+        val body = """{"toNode": "2"}"""
+        val expectedErrorMessage = """{"fromNode": "fromNode must be set"}"""
+        sendPostRequest(body).andExpect {
+            content { json(expectedErrorMessage) }
+        }
+    }
+
+    @Test
+    fun `Returns error message when toNode is not set`() {
+        val body = """{"fromNode": "1"}"""
+        val expectedErrorMessage = """{"toNode": "toNode must be set"}"""
+        sendPostRequest(body).andExpect {
+            content { json(expectedErrorMessage) }
+        }
+    }
+
+    fun sendPostRequest(jsonBody: String): ResultActionsDsl {
         return mockMvc.post("/api/v1/edges") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
-            content = body
+            content = jsonBody
         }
     }
 
-    fun toJson(edge: Edge): String {
-        return """{"fromNode": "${edge.fromNode}", "toNode": "${edge.toNode}"}"""
+    fun edgeAsJson(fromNode: String, toNode: String): String {
+        return """{"fromNode": "${fromNode}", "toNode": "${toNode}"}"""
     }
 
 
