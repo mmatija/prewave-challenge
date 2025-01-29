@@ -1,11 +1,9 @@
 package com.challenge.prewave.prewave_challenge.api
 
-import com.challenge.prewave.prewave_challenge.models.Edge
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActionsDsl
@@ -18,7 +16,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Returns status code 200`() {
-        val body = edgeAsJson(fromNode = "1", toNode = "2")
+        val body = edgeAsJson(fromNode = 1, toNode = 2)
         sendPostRequest(body).andExpect {
             status { isOk() }
         }
@@ -26,7 +24,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Returns created edge`() {
-        val body = edgeAsJson(fromNode =  "1",  toNode = "2")
+        val body = edgeAsJson(fromNode =  1,  toNode = 2)
         sendPostRequest(body).andExpect {
             content { json(body) }
         }
@@ -34,7 +32,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Returns bad request when fromNode value is missing`() {
-        val body = """{"fromNode": "1"}"""
+        val body = """{"fromNode": 1}"""
         sendPostRequest(body).andExpect {
             status { isBadRequest() }
         }
@@ -42,7 +40,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Returns error message when fromNode is not set`() {
-        val body = """{"toNode": "2"}"""
+        val body = """{"toNode": 2}"""
         val expectedErrorMessage = """{"errors": ["fromNode must be set"]}"""
         sendPostRequest(body).andExpect {
             content { json(expectedErrorMessage) }
@@ -51,7 +49,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Returns error message when toNode is not set`() {
-        val body = """{"fromNode": "1"}"""
+        val body = """{"fromNode": 1}"""
         val expectedErrorMessage = """{"errors": ["toNode must be set"]}"""
         sendPostRequest(body).andExpect {
             content { json(expectedErrorMessage) }
@@ -75,10 +73,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
         }
     }
 
-    fun edgeAsJson(fromNode: String, toNode: String): String {
-        return """{"fromNode": "${fromNode}", "toNode": "${toNode}"}"""
+    fun edgeAsJson(fromNode: Int, toNode: Int): String {
+        return """{"fromNode": ${fromNode}, "toNode": ${toNode}}"""
     }
-
-
-
 }
