@@ -1,8 +1,8 @@
-package com.challenge.prewave.prewave_challenge.models
+package com.challenge.prewave.prewave_challenge.api.models
 
 import jakarta.validation.constraints.NotNull
 
-class Edge(
+class NewEdge(
     @field:NotNull(message = "fromNode must be set")
     val fromNode: Long?,
 
