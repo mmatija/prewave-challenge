@@ -43,7 +43,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `Returns error message when fromNode is not set`() {
         val body = """{"toNode": "2"}"""
-        val expectedErrorMessage = """{"fromNode": "fromNode must be set"}"""
+        val expectedErrorMessage = """{"errors": ["fromNode must be set"]}"""
         sendPostRequest(body).andExpect {
             content { json(expectedErrorMessage) }
         }
@@ -52,7 +52,16 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `Returns error message when toNode is not set`() {
         val body = """{"fromNode": "1"}"""
-        val expectedErrorMessage = """{"toNode": "toNode must be set"}"""
+        val expectedErrorMessage = """{"errors": ["toNode must be set"]}"""
+        sendPostRequest(body).andExpect {
+            content { json(expectedErrorMessage) }
+        }
+    }
+
+    @Test
+    fun `Returns both error messages when neither fromNode nor toNode are set`() {
+        val body = "{}"
+        val expectedErrorMessage = """{"errors": ["fromNode must be set", "toNode must be set"]}"""
         sendPostRequest(body).andExpect {
             content { json(expectedErrorMessage) }
         }

@@ -14,13 +14,13 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, String?>> {
-        val errors: MutableMap<String, String?> = HashMap()
+    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, List<String>>> {
+        val errors: MutableList<String> = mutableListOf()
         ex.bindingResult.allErrors.forEach { error ->
-            val fieldName = (error as FieldError).field
             val errorMessage = error.defaultMessage
-            errors[fieldName] = errorMessage
+            errors.addLast(errorMessage)
         }
-        return ResponseEntity(errors, HttpStatus.BAD_REQUEST)
+        val responseBody = mapOf("errors" to errors)
+        return ResponseEntity(responseBody, HttpStatus.BAD_REQUEST)
     }
 }
