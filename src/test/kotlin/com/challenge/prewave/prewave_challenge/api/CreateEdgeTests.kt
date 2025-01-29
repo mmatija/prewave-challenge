@@ -14,11 +14,7 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class CreateEdgeTests(@Autowired val restTemplate: TestRestTemplate) {
-
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
+class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Returns status code 200`() {
