@@ -1,5 +1,6 @@
 package com.challenge.prewave.prewave_challenge.api
 
+import com.challenge.prewave.prewave_challenge.BaseTest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -12,7 +13,7 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
+class CreateEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Test
     fun `Returns status code 200`() {
@@ -60,6 +61,25 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) {
     fun `Returns both error messages when neither fromNode nor toNode are set`() {
         val body = "{}"
         val expectedErrorMessage = """{"errors": ["fromNode must be set", "toNode must be set"]}"""
+        sendPostRequest(body).andExpect {
+            content { json(expectedErrorMessage) }
+        }
+    }
+
+    @Test
+    fun `Returns status code 422 when edge already exists`() {
+        val body = edgeAsJson(fromNode = 1, toNode = 2)
+        sendPostRequest(body)
+        sendPostRequest(body).andExpect {
+            status { isUnprocessableEntity() }
+        }
+    }
+
+    @Test
+    fun `Returns error message when edge already exists`() {
+        val body = edgeAsJson(fromNode = 1, toNode = 2)
+        val expectedErrorMessage = """{"errors": ["Edge from 1 to 2 already exists"]}"""
+        sendPostRequest(body)
         sendPostRequest(body).andExpect {
             content { json(expectedErrorMessage) }
         }

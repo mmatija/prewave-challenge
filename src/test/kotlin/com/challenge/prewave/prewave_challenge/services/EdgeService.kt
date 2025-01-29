@@ -1,5 +1,6 @@
 package com.challenge.prewave.prewave_challenge.services
 
+import com.challenge.prewave.prewave_challenge.BaseTest
 import com.challenge.prewave.prewave_challenge.EdgeService
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.models.Edge
@@ -15,18 +16,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @SpringBootTest
-class EdgeServiceTest {
+class EdgeServiceTest: BaseTest() {
 
     @Autowired
     lateinit var edgeService: EdgeService
-
-    @Autowired
-    lateinit var dslContext: DSLContext
-
-    @AfterEach
-    fun cleanUp() {
-        dslContext.deleteFrom(table("edge")).execute()
-    }
 
     @Test
     fun `calling createEdge method stores the edge information in the database`() {

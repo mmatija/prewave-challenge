@@ -23,4 +23,13 @@ class GlobalExceptionHandler {
         val responseBody = mapOf("errors" to errors)
         return ResponseEntity(responseBody, HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(EdgeAlreadyExistsException::class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    fun handleEdgeAlreadyExists(ex: EdgeAlreadyExistsException): ResponseEntity<Map<String, List<String>>> {
+        val errors = listOf(ex.message!!)
+        val responseBody = mapOf("errors" to errors)
+        return ResponseEntity(responseBody, HttpStatus.UNPROCESSABLE_ENTITY)
+    }
+
 }
