@@ -1,0 +1,12 @@
+name: prewave-challenge
+services:
+    database:
+        image: postgres:17.2
+        environment:
+            POSTGRES_USER: test
+            POSTGRES_PASSWORD: test
+            POSTGRES_DB: test
+        volumes:
+            -   './init.sql:/docker-entrypoint-initdb.d/init.sql'
+        ports:
+            -   "${DATABASE_PORT:-5432}:5432"
