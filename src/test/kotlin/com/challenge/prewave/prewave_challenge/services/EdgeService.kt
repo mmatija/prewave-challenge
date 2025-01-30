@@ -24,8 +24,8 @@ class EdgeServiceTest: BaseTest() {
         val result = dslContext.fetch(EDGE)
         assertEquals(result.size, 1)
         val createdEdge = result.first()
-        assertEquals(createdEdge.fromId, 1L)
-        assertEquals(createdEdge.toId, 2L)
+        assertEquals(createdEdge.fromId, 1)
+        assertEquals(createdEdge.toId, 2)
     }
 
     @Test

@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS edge (
-    from_id bigint,
-    to_id bigint,
+    from_id integer,
+    to_id integer,
     PRIMARY KEY (from_id, to_id)
 );
 

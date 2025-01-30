@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull
 
 class NewEdge(
     @field:NotNull(message = "fromNode must be set")
-    val fromNode: Long?,
+    val fromNode: Int?,
 
     @field:NotNull(message = "toNode must be set")
-    val toNode: Long?
+    val toNode: Int?
 )
