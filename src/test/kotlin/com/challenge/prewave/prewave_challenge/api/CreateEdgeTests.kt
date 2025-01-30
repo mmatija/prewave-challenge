@@ -85,6 +85,14 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
         }
     }
 
+    @Test
+    fun `Returns status code 422 when source and destination node are the same`() {
+        val body = edgeAsJson(fromNode = 1, toNode = 1)
+        sendPostRequest(body).andExpect {
+            status { isUnprocessableEntity() }
+        }
+    }
+
     fun sendPostRequest(jsonBody: String): ResultActionsDsl {
         return mockMvc.post("/api/v1/edges") {
             contentType = MediaType.APPLICATION_JSON

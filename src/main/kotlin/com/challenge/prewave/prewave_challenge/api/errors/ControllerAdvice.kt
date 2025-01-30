@@ -50,4 +50,12 @@ class GlobalExceptionHandler {
         return ResponseEntity(responseBody, HttpStatus.UNPROCESSABLE_ENTITY)
     }
 
+    @ExceptionHandler(SourceAndDestinationNodesSameException::class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    fun handleSourceAndDestinationNodeSameException(ex: SourceAndDestinationNodesSameException): ResponseEntity<Map<String, List<String>>> {
+        val errors = listOf(ex.message!!)
+        val responseBody = mapOf("errors" to errors)
+        return ResponseEntity(responseBody, HttpStatus.UNPROCESSABLE_ENTITY)
+    }
+
 }

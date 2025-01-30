@@ -4,6 +4,7 @@ import com.challenge.prewave.prewave_challenge.BaseTest
 import com.challenge.prewave.prewave_challenge.EdgeService
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
+import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
 import com.challenge.prewave.prewave_challenge.api.models.Edge
 import com.challenge.prewave.prewave_challenge.tables.references.EDGE
 import org.junit.jupiter.api.Test
@@ -33,6 +34,11 @@ class EdgeServiceTest: BaseTest() {
         val result = edgeService.createEdge(1, 2)
         val expectedResult = Edge(1, 2)
         assertEquals(result, expectedResult)
+    }
+
+    @Test
+    fun `createEdge raises an error when trying to create an edge from node to itself`() {
+        assertThrows<SourceAndDestinationNodesSameException> { edgeService.createEdge(1, 1) }
     }
 
     @Test

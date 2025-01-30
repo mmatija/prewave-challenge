@@ -2,6 +2,7 @@ package com.challenge.prewave.prewave_challenge
 
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
+import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
 import com.challenge.prewave.prewave_challenge.api.models.Edge
 import com.challenge.prewave.prewave_challenge.tables.references.EDGE
 import org.jooq.DSLContext
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service
 class EdgeService(private val dslContext: DSLContext) {
 
     fun createEdge(fromNode: Int, toNode: Int): Edge {
+        if (fromNode == toNode) {
+            throw SourceAndDestinationNodesSameException("Destination node cannot be the same as source node")
+        }
         try {
             dslContext.insertInto(EDGE, EDGE.FROM_ID, EDGE.TO_ID).values(fromNode, toNode).execute()
             return Edge(fromNode = fromNode, toNode = toNode)
