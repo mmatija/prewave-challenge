@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -24,9 +25,26 @@ class GlobalExceptionHandler {
         return ResponseEntity(responseBody, HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleMissingParameterException(ex: MissingServletRequestParameterException): ResponseEntity<Map<String, List<String>>> {
+        val errors = listOf("${ex.parameterName} must be set")
+        val responseBody = mapOf("errors" to errors)
+        return ResponseEntity(responseBody, HttpStatus.BAD_REQUEST)
+    }
+
     @ExceptionHandler(EdgeAlreadyExistsException::class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    fun handleEdgeAlreadyExists(ex: EdgeAlreadyExistsException): ResponseEntity<Map<String, List<String>>> {
+    fun handleEdgeAlreadyExistsException(ex: EdgeAlreadyExistsException): ResponseEntity<Map<String, List<String>>> {
+        val errors = listOf(ex.message!!)
+        val responseBody = mapOf("errors" to errors)
+        return ResponseEntity(responseBody, HttpStatus.UNPROCESSABLE_ENTITY)
+    }
+
+
+    @ExceptionHandler(EdgeDoesNotExistException::class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    fun handleEdgeDoesNotExistException(ex: EdgeDoesNotExistException): ResponseEntity<Map<String, List<String>>> {
         val errors = listOf(ex.message!!)
         val responseBody = mapOf("errors" to errors)
         return ResponseEntity(responseBody, HttpStatus.UNPROCESSABLE_ENTITY)

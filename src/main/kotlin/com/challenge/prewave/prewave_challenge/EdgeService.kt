@@ -23,7 +23,7 @@ class EdgeService(private val dslContext: DSLContext) {
     fun deleteEdge(fromNode: Int, toNode: Int) {
         val result = dslContext.deleteFrom(EDGE).where(EDGE.FROM_ID.equal(fromNode)).and(EDGE.TO_ID.equal(toNode)).execute()
         if (result == 0) {
-            throw EdgeDoesNotExistException("Edge from node $fromNode to $toNode does not exist")
+            throw EdgeDoesNotExistException("Edge from node $fromNode to node $toNode does not exist")
         }
     }
 }
