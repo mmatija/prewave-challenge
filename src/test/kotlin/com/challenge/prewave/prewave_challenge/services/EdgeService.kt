@@ -4,10 +4,7 @@ import com.challenge.prewave.prewave_challenge.BaseTest
 import com.challenge.prewave.prewave_challenge.EdgeService
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.models.Edge
-import org.jooq.DSLContext
-import org.jooq.impl.DSL.field
-import org.jooq.impl.DSL.table
-import org.junit.jupiter.api.AfterEach
+import com.challenge.prewave.prewave_challenge.tables.Edge.Companion.EDGE
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,10 +21,11 @@ class EdgeServiceTest: BaseTest() {
     @Test
     fun `calling createEdge method stores the edge information in the database`() {
         edgeService.createEdge(1, 2)
-        val result = dslContext.select().from("edge").fetch()
+        val result = dslContext.fetch(EDGE)
         assertEquals(result.size, 1)
-        assertEquals(result.first().getValue(field("from_id")), 1L)
-        assertEquals(result.first().getValue(field("to_id")), 2L)
+        val createdEdge = result.first()
+        assertEquals(createdEdge.fromId, 1L)
+        assertEquals(createdEdge.toId, 2L)
     }
 
     @Test
