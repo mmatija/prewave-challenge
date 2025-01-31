@@ -4,7 +4,6 @@ import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsExcep
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
 import com.challenge.prewave.prewave_challenge.models.Edge
-import com.challenge.prewave.prewave_challenge.models.Node
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 
