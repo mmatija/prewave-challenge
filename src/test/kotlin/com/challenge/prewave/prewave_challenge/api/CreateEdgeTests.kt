@@ -67,6 +67,23 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     }
 
     @Test
+    fun `Returns error message when one of the values is not an integer`() {
+        val body = """{"fromNode": "a", "toNode": 2}"""
+        val expectedErrorMessage = """{"errors": ["Incorrect data type(s) provided"]}"""
+        sendPostRequest(body).andExpect {
+            content { json(expectedErrorMessage) }
+        }
+    }
+
+    @Test
+    fun `Returns status code 400 when one of the values is not an integer`() {
+        val body = """{"fromNode": "a", "toNode": 2}"""
+        sendPostRequest(body).andExpect {
+            status { isBadRequest() }
+        }
+    }
+
+    @Test
     fun `Returns status code 422 when edge already exists`() {
         val body = edgeAsJson(fromNode = 1, toNode = 2)
         sendPostRequest(body)

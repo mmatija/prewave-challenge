@@ -53,6 +53,11 @@ class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     }
 
     @Test
+    fun `Returns status code 400 when one of the parameters is not an integer`() {
+        mockMvc.delete("/api/v1/edges?fromNode=a&toNode=2").andExpect { status { isBadRequest() } }
+    }
+
+    @Test
     fun `Returns error message when fromNode parameter is missing`() {
         val expectedErrorMessage = """{"errors": ["fromNode must be set"]}"""
         mockMvc.delete("/api/v1/edges?toNode=2").andExpect { content { json(expectedErrorMessage) } }
@@ -68,6 +73,12 @@ class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     fun `Returns error message when toNode parameter is missing`() {
         val expectedErrorMessage = """{"errors": ["toNode must be set"]}"""
         mockMvc.delete("/api/v1/edges?fromNode=1").andExpect { content { json(expectedErrorMessage) } }
+    }
+
+    @Test
+    fun `Returns error message when toNode parameter is not an integer`() {
+        val expectedErrorMessage = """{"errors": ["Incorrect data type(s) provided"]}"""
+        mockMvc.delete("/api/v1/edges?fromNode=a&toNode=2").andExpect { content { json(expectedErrorMessage) } }
     }
 
     fun sendDeleteRequest(fromNode: Int, toNode: Int): ResultActionsDsl {
