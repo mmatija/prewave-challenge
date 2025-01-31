@@ -4,6 +4,7 @@ import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsExcep
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
 import com.challenge.prewave.prewave_challenge.models.Edge
+import com.challenge.prewave.prewave_challenge.models.Node
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 
@@ -28,7 +29,17 @@ class TreeService(val edgeRepository: PersistentEdgeRepository) {
         }
     }
 
-    fun getConnectedNodes(rootNodes: List<Int>): Map<Int, List<Int>> {
-        return edgeRepository.findByFromIds(rootNodes)
+    fun getTree(rootNodeId: Int): Map<Int, List<Int>> {
+        val allConnections: MutableMap<Int, List<Int>> = mutableMapOf()
+        var nodesToFetch = mutableSetOf(rootNodeId)
+        while (nodesToFetch.isNotEmpty()) {
+            val connections = edgeRepository.findByFromIds(nodesToFetch.filter { n -> !allConnections.containsKey(n) }.toList())
+            nodesToFetch = mutableSetOf()
+            connections.forEach { (k, v) ->
+                allConnections[k] = v
+                nodesToFetch.addAll(v)
+            }
+        }
+        return allConnections
     }
 }

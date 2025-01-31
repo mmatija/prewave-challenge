@@ -18,17 +18,7 @@ class TreeController {
 
     @RequestMapping(value = ["/v1/tree"], method = [RequestMethod.GET], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteEdge(@RequestParam rootNode: Int): TreeDTO {
-        val allConnections: MutableMap<Int, List<Int>> = mutableMapOf()
-        var nodesToFetch = mutableSetOf(rootNode)
-        while (nodesToFetch.isNotEmpty()) {
-            val connections = treeService.getConnectedNodes(nodesToFetch.filter { n -> !allConnections.containsKey(n) }.toList())
-            nodesToFetch = mutableSetOf()
-            connections.forEach { (k, v) ->
-                allConnections[k] = v
-                nodesToFetch.addAll(v)
-            }
-        }
-
+        val allConnections = treeService.getTree(rootNode)
         return TreeDTO(rootNode, allConnections)
     }
 }

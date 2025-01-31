@@ -41,7 +41,7 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
     fun `disconnectNodes removes the given edge`() {
         treeService.connectNodes(1, 2)
         treeService.disconnectNodes(1,2)
-        val connectedNodes = treeService.getConnectedNodes(listOf(1))
+        val connectedNodes = treeService.getTree(1)
         assertEquals(emptyMap(), connectedNodes)
     }
 
@@ -51,17 +51,15 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
     }
 
     @Test
-    fun `getConnectedNodes returns all connections of depth 1 for given nodes`() {
+    fun `getTree returns the tree starting from a given node`() {
         treeService.connectNodes(1, 2)
         treeService.connectNodes(1, 3)
         treeService.connectNodes(2, 4)
         treeService.connectNodes(2, 5)
         treeService.connectNodes(3, 6)
-        val node1 = 1
-        val node2 = 2
-        val node4 = 4
-        val connectedNodes = treeService.getConnectedNodes(rootNodes = listOf(node1, node2, node4));
-        val expectedResult = mapOf(node1 to listOf(2, 3), node2 to listOf(4, 5))
+        treeService.connectNodes(10, 11)
+        val connectedNodes = treeService.getTree(rootNodeId = 1);
+        val expectedResult = mapOf(1 to listOf(2, 3), 2 to listOf(4, 5), 3 to listOf(6))
         assertEquals(expectedResult, connectedNodes)
     }
 }
