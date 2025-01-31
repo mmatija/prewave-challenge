@@ -67,13 +67,14 @@ class PersistentEdgeRepositoryTests: BaseTest() {
         edgeRepositroy.create(2, 4)
         edgeRepositroy.create(3, 4)
         val result = edgeRepositroy.findByFromIds(ids = listOf(1, 2, 5))
-        assertEquals(listOf(Edge(1,2), Edge(1,3), Edge(2,4)), result)
+        val expectedResult = mapOf(1 to listOf(2, 3), 2 to listOf(4))
+        assertEquals(expectedResult, result)
     }
 
     @Test
-    fun `fundByFromIds returns empty list if there are no matching results`() {
+    fun `findByFromIds returns empty map if there are no matching results`() {
         val result = edgeRepositroy.findByFromIds(ids = listOf(1))
-        assertEquals(emptyList<Edge>(), result)
+        assertEquals(emptyMap<Int, List<Int>>(), result)
     }
 }
 

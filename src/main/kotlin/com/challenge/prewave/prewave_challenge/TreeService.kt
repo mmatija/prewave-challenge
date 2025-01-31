@@ -29,9 +29,6 @@ class TreeService(val edgeRepository: PersistentEdgeRepository) {
     }
 
     fun getConnectedNodes(rootNodes: List<Int>): Map<Int, List<Int>> {
-        val result = edgeRepository.findByFromIds(rootNodes)
-        val connectedNodes = rootNodes.associateWith { emptyList<Int>().toMutableList() }.toMutableMap()
-        result.forEach { r -> connectedNodes[r.fromNode]?.add(r.toNode) }
-        return connectedNodes
+        return edgeRepository.findByFromIds(rootNodes)
     }
 }

@@ -42,7 +42,7 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
         treeService.connectNodes(1, 2)
         treeService.disconnectNodes(1,2)
         val connectedNodes = treeService.getConnectedNodes(listOf(1))
-        assertEquals(mapOf(1 to emptyList()), connectedNodes)
+        assertEquals(emptyMap(), connectedNodes)
     }
 
     @Test
@@ -61,7 +61,7 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
         val node2 = 2
         val node4 = 4
         val connectedNodes = treeService.getConnectedNodes(rootNodes = listOf(node1, node2, node4));
-        val expectedResult = mapOf(node1 to listOf(2, 3), node2 to listOf(4, 5), node4 to listOf())
+        val expectedResult = mapOf(node1 to listOf(2, 3), node2 to listOf(4, 5))
         assertEquals(expectedResult, connectedNodes)
     }
 }

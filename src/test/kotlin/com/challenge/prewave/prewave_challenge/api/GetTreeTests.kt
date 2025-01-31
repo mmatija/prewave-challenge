@@ -43,14 +43,12 @@ class GetTreeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     }
 
     @Test
-    fun `Returns empty array when node has no connections`() {
+    fun `Returns empty hash when node has no connections`() {
         val rootNode = 1
         val expectedResponseBody = """
         {
             "rootNode": $rootNode,
-            "connections": {
-                "$rootNode": []
-            }
+            "connections": {}
         }
         """
         mockMvc.get("/api/v1/tree?rootNode=$rootNode").andExpect { content { json(expectedResponseBody) } }

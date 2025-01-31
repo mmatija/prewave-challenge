@@ -17,9 +17,18 @@ class PersistentEdgeRepository(private val dslContext: DSLContext) : EdgeReposit
         return result == 1
     }
 
-    override fun findByFromIds(ids: List<Int>): List<Edge> {
-        val result = dslContext.select(EDGE).from(EDGE).where(EDGE.FROM_ID.`in`(ids)).fetch()
-        return result.map { r -> Edge(r.value1().fromId!!, r.value1().toId!!) }
+    override fun findByFromIds(ids: List<Int>): Map<Int, List<Int>> {
+        val results = dslContext.select(EDGE).from(EDGE).where(EDGE.FROM_ID.`in`(ids)).fetch()
+        val connections = mutableMapOf<Int, MutableList<Int>>()
+        results.forEach { result ->
+            val fromId = result.value1().fromId!!
+            val toId = result.value1().toId!!
+            if (connections[fromId].isNullOrEmpty()) {
+                connections[fromId] = mutableListOf()
+            }
+            connections[fromId]?.add(toId)
+        }
+        return connections
     }
 
 }
