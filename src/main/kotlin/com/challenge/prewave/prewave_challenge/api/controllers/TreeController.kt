@@ -1,6 +1,6 @@
 package com.challenge.prewave.prewave_challenge.api.controllers
 
-import com.challenge.prewave.prewave_challenge.TreeService
+import com.challenge.prewave.prewave_challenge.services.TreeService
 import com.challenge.prewave.prewave_challenge.api.models.TreeDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType

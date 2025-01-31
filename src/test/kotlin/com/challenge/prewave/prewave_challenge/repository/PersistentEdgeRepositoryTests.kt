@@ -1,7 +1,7 @@
 package com.challenge.prewave.prewave_challenge.repository
 
 import com.challenge.prewave.prewave_challenge.BaseTest
-import com.challenge.prewave.prewave_challenge.PersistentEdgeRepository
+import com.challenge.prewave.prewave_challenge.repositories.PersistentEdgeRepository
 import com.challenge.prewave.prewave_challenge.tables.Edge.Companion.EDGE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

@@ -1,4 +1,4 @@
-package com.challenge.prewave.prewave_challenge
+package com.challenge.prewave.prewave_challenge.repositories
 
 interface EdgeRepository {
     fun create(fromId: Int, toId: Int)

@@ -1,8 +1,8 @@
 package com.challenge.prewave.prewave_challenge.services
 
 import com.challenge.prewave.prewave_challenge.BaseTest
-import com.challenge.prewave.prewave_challenge.TreeService
-import com.challenge.prewave.prewave_challenge.PersistentEdgeRepository
+import com.challenge.prewave.prewave_challenge.services.TreeService
+import com.challenge.prewave.prewave_challenge.repositories.PersistentEdgeRepository
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException

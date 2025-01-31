@@ -1,4 +1,4 @@
-package com.challenge.prewave.prewave_challenge
+package com.challenge.prewave.prewave_challenge.repositories
 
 import com.challenge.prewave.prewave_challenge.tables.Edge.Companion.EDGE
 import org.jooq.DSLContext

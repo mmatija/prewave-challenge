@@ -1,7 +1,7 @@
 package com.challenge.prewave.prewave_challenge.api
 
 import com.challenge.prewave.prewave_challenge.BaseTest
-import com.challenge.prewave.prewave_challenge.TreeService
+import com.challenge.prewave.prewave_challenge.services.TreeService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
