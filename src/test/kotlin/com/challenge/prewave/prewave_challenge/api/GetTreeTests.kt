@@ -1,7 +1,7 @@
 package com.challenge.prewave.prewave_challenge.api
 
 import com.challenge.prewave.prewave_challenge.BaseTest
-import com.challenge.prewave.prewave_challenge.EdgeService
+import com.challenge.prewave.prewave_challenge.TreeService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.get
 class GetTreeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Autowired
-    lateinit var edgeService: EdgeService
+    lateinit var treeService: TreeService
 
     @Test
     fun `Returns status code 200`() {
@@ -23,11 +23,11 @@ class GetTreeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Test
     fun `Returns correct response body`() {
-        edgeService.createEdge(1, 2)
-        edgeService.createEdge(1, 3)
-        edgeService.createEdge(2, 4)
-        edgeService.createEdge(2, 5)
-        edgeService.createEdge(3, 1)
+        treeService.connectNodes(1, 2)
+        treeService.connectNodes(1, 3)
+        treeService.connectNodes(2, 4)
+        treeService.connectNodes(2, 5)
+        treeService.connectNodes(3, 1)
         val rootNode = 1
         val expectedResponseBody = """
             {

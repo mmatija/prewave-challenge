@@ -8,9 +8,9 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 
 @Service
-class EdgeService(val edgeRepository: PersistentEdgeRepository) {
+class TreeService(val edgeRepository: PersistentEdgeRepository) {
 
-    fun createEdge(fromNode: Int, toNode: Int): Edge {
+    fun connectNodes(fromNode: Int, toNode: Int): Edge {
         if (fromNode == toNode) {
             throw SourceAndDestinationNodesSameException("Destination node cannot be the same as source node")
         }
@@ -21,7 +21,7 @@ class EdgeService(val edgeRepository: PersistentEdgeRepository) {
         }
     }
 
-    fun deleteEdge(fromNode: Int, toNode: Int) {
+    fun disconnectNodes(fromNode: Int, toNode: Int) {
         val result = edgeRepository.delete(fromNode, toNode)
         if (!result) {
             throw EdgeDoesNotExistException("Edge from node $fromNode to node $toNode does not exist")

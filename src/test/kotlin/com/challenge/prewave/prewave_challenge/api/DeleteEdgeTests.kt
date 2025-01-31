@@ -1,7 +1,7 @@
 package com.challenge.prewave.prewave_challenge.api
 
 import com.challenge.prewave.prewave_challenge.BaseTest
-import com.challenge.prewave.prewave_challenge.EdgeService
+import com.challenge.prewave.prewave_challenge.TreeService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -16,13 +16,13 @@ import org.springframework.test.web.servlet.post
 class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Autowired
-    lateinit var edgeService: EdgeService
+    lateinit var treeService: TreeService
 
     @Test
     fun `Returns status code 204 when edge is deleted`() {
         val fromNode = 1
         val toNode = 2
-        edgeService.createEdge(fromNode = fromNode, toNode = toNode)
+        treeService.connectNodes(fromNode = fromNode, toNode = toNode)
         sendDeleteRequest(fromNode, toNode).andExpect { status { isNoContent() } }
     }
 
@@ -30,7 +30,7 @@ class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     fun `Returns empty body when edge is deleted`() {
         val fromNode = 1
         val toNode = 2
-        edgeService.createEdge(fromNode = fromNode, toNode = toNode)
+        treeService.connectNodes(fromNode = fromNode, toNode = toNode)
         sendDeleteRequest(fromNode, toNode).andExpect { content { string("") } }
     }
 
