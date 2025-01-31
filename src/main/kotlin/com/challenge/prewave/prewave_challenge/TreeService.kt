@@ -33,7 +33,8 @@ class TreeService(val edgeRepository: PersistentEdgeRepository) {
         val allConnections: MutableMap<Int, List<Int>> = mutableMapOf()
         var nodesToFetch = mutableSetOf(rootNodeId)
         while (nodesToFetch.isNotEmpty()) {
-            val connections = edgeRepository.findByFromIds(nodesToFetch.filter { n -> !allConnections.containsKey(n) }.toList())
+            val nonVisitedNodes = nodesToFetch.filter { n -> !allConnections.containsKey(n) }
+            val connections = edgeRepository.findByFromIds(nonVisitedNodes)
             nodesToFetch = mutableSetOf()
             connections.forEach { (k, v) ->
                 allConnections[k] = v
