@@ -25,7 +25,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Test
     fun `Returns created edge`() {
-        val body = edgeAsJson(fromNode =  1,  toNode = 2)
+        val body = edgeAsJson(fromNode = 1, toNode = 2)
         sendPostRequest(body).andExpect {
             content { json(body) }
         }
@@ -33,7 +33,11 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Test
     fun `Returns bad request when fromNode value is missing`() {
-        val body = """{"fromNode": 1}"""
+        val body = """
+                {
+                    "fromNode": 1
+                }
+            """
         sendPostRequest(body).andExpect {
             status { isBadRequest() }
         }

@@ -1,11 +1,11 @@
 package com.challenge.prewave.prewave_challenge.api
 
 import com.challenge.prewave.prewave_challenge.BaseTest
+import com.challenge.prewave.prewave_challenge.EdgeService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActionsDsl
 import org.springframework.test.web.servlet.delete
@@ -15,11 +15,14 @@ import org.springframework.test.web.servlet.post
 @AutoConfigureMockMvc
 class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
+    @Autowired
+    lateinit var edgeService: EdgeService
+
     @Test
     fun `Returns status code 204 when edge is deleted`() {
         val fromNode = 1
         val toNode = 2
-        createEdge(fromNode = fromNode, toNode = toNode)
+        edgeService.createEdge(fromNode = fromNode, toNode = toNode)
         sendDeleteRequest(fromNode, toNode).andExpect { status { isNoContent() } }
     }
 
@@ -27,7 +30,7 @@ class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     fun `Returns empty body when edge is deleted`() {
         val fromNode = 1
         val toNode = 2
-        createEdge(fromNode = fromNode, toNode = toNode)
+        edgeService.createEdge(fromNode = fromNode, toNode = toNode)
         sendDeleteRequest(fromNode, toNode).andExpect { content { string("") } }
     }
 
@@ -69,15 +72,6 @@ class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     fun sendDeleteRequest(fromNode: Int, toNode: Int): ResultActionsDsl {
         return mockMvc.delete("/api/v1/edges?fromNode=$fromNode&toNode=$toNode")
-    }
-
-    fun createEdge(fromNode: Int, toNode: Int): ResultActionsDsl {
-        val jsonBody = """{"fromNode": ${fromNode}, "toNode": ${toNode}}"""
-        return mockMvc.post("/api/v1/edges") {
-            contentType = MediaType.APPLICATION_JSON
-            accept = MediaType.APPLICATION_JSON
-            content = jsonBody
-        }
     }
 
 }
