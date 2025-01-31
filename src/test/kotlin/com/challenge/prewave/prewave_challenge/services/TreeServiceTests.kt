@@ -50,7 +50,7 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
     }
 
     @Test
-    fun `getTree returns the tree starting from a given node`() {
+    fun `getTree returns the whole tree when given node is root`() {
         treeService.connectNodes(1, 2)
         treeService.connectNodes(1, 3)
         treeService.connectNodes(2, 4)
@@ -59,6 +59,19 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
         treeService.connectNodes(10, 11)
         val connectedNodes = treeService.getTree(rootNodeId = 1);
         val expectedResult = mapOf(1 to listOf(2, 3), 2 to listOf(4, 5), 3 to listOf(6))
+        assertEquals(expectedResult, connectedNodes)
+    }
+
+    @Test
+    fun `getTree returns the subtree when given node is not root`() {
+        treeService.connectNodes(1, 2)
+        treeService.connectNodes(1, 3)
+        treeService.connectNodes(2, 4)
+        treeService.connectNodes(2, 5)
+        treeService.connectNodes(3, 6)
+        treeService.connectNodes(10, 11)
+        val connectedNodes = treeService.getTree(rootNodeId = 2);
+        val expectedResult = mapOf(2 to listOf(4, 5))
         assertEquals(expectedResult, connectedNodes)
     }
 
