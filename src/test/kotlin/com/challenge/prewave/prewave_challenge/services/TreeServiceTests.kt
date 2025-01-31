@@ -7,7 +7,6 @@ import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsExcep
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
 import com.challenge.prewave.prewave_challenge.models.Edge
-import com.challenge.prewave.prewave_challenge.tables.references.EDGE
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -60,6 +59,13 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
         treeService.connectNodes(10, 11)
         val connectedNodes = treeService.getTree(rootNodeId = 1);
         val expectedResult = mapOf(1 to listOf(2, 3), 2 to listOf(4, 5), 3 to listOf(6))
+        assertEquals(expectedResult, connectedNodes)
+    }
+
+    @Test
+    fun `getTree returns empty map if given node has no connections`() {
+        val connectedNodes = treeService.getTree(rootNodeId = 1);
+        val expectedResult = emptyMap<Int, List<Int>>()
         assertEquals(expectedResult, connectedNodes)
     }
 }
