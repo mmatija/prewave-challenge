@@ -60,4 +60,18 @@ class EdgeServiceTest: BaseTest() {
         assertThrows<EdgeDoesNotExistException> { edgeService.deleteEdge(1,2) }
     }
 
+    @Test
+    fun `getConnectedNodes returns all connections of depth 1 for given nodes`() {
+        edgeService.createEdge(1, 2)
+        edgeService.createEdge(1, 3)
+        edgeService.createEdge(2, 4)
+        edgeService.createEdge(2, 5)
+        edgeService.createEdge(3, 6)
+        val node1 = 1
+        val node2 = 2
+        val node4 = 4
+        val connectedNodes = edgeService.getConnectedNodes(rootNodes = listOf(node1, node2, node4));
+        val expectedResult = mapOf(node1 to listOf(2, 3), node2 to listOf(4, 5), node4 to listOf())
+        assertEquals(expectedResult, connectedNodes)
+    }
 }

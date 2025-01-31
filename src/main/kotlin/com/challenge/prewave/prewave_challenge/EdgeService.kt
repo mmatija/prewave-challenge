@@ -30,4 +30,11 @@ class EdgeService(private val dslContext: DSLContext) {
             throw EdgeDoesNotExistException("Edge from node $fromNode to node $toNode does not exist")
         }
     }
+
+    fun getConnectedNodes(rootNodes: List<Int>): Map<Int, List<Int>> {
+        val result = dslContext.select(EDGE).from(EDGE).where(EDGE.FROM_ID.`in`(rootNodes)).fetch()
+        val connectedNodes = rootNodes.associateWith { emptyList<Int>().toMutableList() }.toMutableMap()
+        result.forEach { r -> connectedNodes[r.value1().fromId]?.add(r.value1().toId!!) }
+        return connectedNodes
+    }
 }
