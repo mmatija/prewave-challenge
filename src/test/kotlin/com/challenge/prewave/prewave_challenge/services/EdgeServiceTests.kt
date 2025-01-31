@@ -2,6 +2,7 @@ package com.challenge.prewave.prewave_challenge.services
 
 import com.challenge.prewave.prewave_challenge.BaseTest
 import com.challenge.prewave.prewave_challenge.EdgeService
+import com.challenge.prewave.prewave_challenge.PersistentEdgeRepository
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
@@ -14,20 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.assertEquals
 
 @SpringBootTest
-class EdgeServiceTest: BaseTest() {
+class EdgeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): BaseTest() {
 
-    @Autowired
-    lateinit var edgeService: EdgeService
-
-    @Test
-    fun `createEdge method stores the edge information in the database`() {
-        edgeService.createEdge(1, 2)
-        val result = dslContext.fetch(EDGE)
-        assertEquals( 1, result.size)
-        val createdEdge = result.first()
-        assertEquals( 1, createdEdge.fromId)
-        assertEquals( 2, createdEdge.toId)
-    }
+    val edgeService = EdgeService(edgeRepository = edgeRepository)
 
     @Test
     fun `createEdge method returns created edge`() {
@@ -48,11 +38,11 @@ class EdgeServiceTest: BaseTest() {
     }
 
     @Test
-    fun `deleteEdge removes the edge from the database`() {
+    fun `deleteEdge removes the given edge`() {
         edgeService.createEdge(1, 2)
         edgeService.deleteEdge(1,2)
-        val result = dslContext.fetch(EDGE)
-        assertEquals( 0, result.size)
+        val connectedNodes = edgeService.getConnectedNodes(listOf(1))
+        assertEquals(mapOf(1 to emptyList()), connectedNodes)
     }
 
     @Test
