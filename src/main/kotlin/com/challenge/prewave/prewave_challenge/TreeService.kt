@@ -15,7 +15,8 @@ class TreeService(val edgeRepository: PersistentEdgeRepository) {
             throw SourceAndDestinationNodesSameException("Destination node cannot be the same as source node")
         }
         try {
-            return edgeRepository.create(fromNode, toNode)
+            edgeRepository.create(fromNode, toNode)
+            return Edge(fromNode, toNode)
         } catch (ex: DuplicateKeyException) {
             throw EdgeAlreadyExistsException("Edge from $fromNode to $toNode already exists")
         }

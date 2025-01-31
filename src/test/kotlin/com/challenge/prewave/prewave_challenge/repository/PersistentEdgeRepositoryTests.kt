@@ -2,7 +2,6 @@ package com.challenge.prewave.prewave_challenge.repository
 
 import com.challenge.prewave.prewave_challenge.BaseTest
 import com.challenge.prewave.prewave_challenge.PersistentEdgeRepository
-import com.challenge.prewave.prewave_challenge.models.Edge
 import com.challenge.prewave.prewave_challenge.tables.Edge.Companion.EDGE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,12 +26,6 @@ class PersistentEdgeRepositoryTests: BaseTest() {
         val createdEdge = result.first()
         assertEquals( 1, createdEdge.fromId)
         assertEquals( 2, createdEdge.toId)
-    }
-
-    @Test
-    fun `create method returns created edge`() {
-        val result = edgeRepositroy.create(1, 2)
-        assertEquals(Edge(1, 2), result)
     }
 
     @Test

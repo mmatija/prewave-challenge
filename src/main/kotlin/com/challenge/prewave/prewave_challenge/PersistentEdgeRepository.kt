@@ -1,15 +1,13 @@
 package com.challenge.prewave.prewave_challenge
 
-import com.challenge.prewave.prewave_challenge.models.Edge
 import com.challenge.prewave.prewave_challenge.tables.Edge.Companion.EDGE
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 
 @Repository
 class PersistentEdgeRepository(private val dslContext: DSLContext) : EdgeRepository {
-    override fun create(fromId: Int, toId: Int): Edge {
+    override fun create(fromId: Int, toId: Int) {
         dslContext.insertInto(EDGE, EDGE.FROM_ID, EDGE.TO_ID).values(fromId, toId).execute()
-        return Edge(fromId, toId)
     }
 
     override fun delete(fromId: Int, toId: Int): Boolean {
