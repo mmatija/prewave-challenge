@@ -1,7 +1,7 @@
 package com.challenge.prewave.prewave_challenge.api.controllers
 
 import com.challenge.prewave.prewave_challenge.EdgeService
-import com.challenge.prewave.prewave_challenge.api.models.Tree
+import com.challenge.prewave.prewave_challenge.api.models.TreeDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,7 +17,7 @@ class TreeController {
     private lateinit var edgeService: EdgeService
 
     @RequestMapping(value = ["/v1/tree"], method = [RequestMethod.GET], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteEdge(@RequestParam rootNode: Int): Tree {
+    fun deleteEdge(@RequestParam rootNode: Int): TreeDTO {
         val allConnections: MutableMap<Int, List<Int>> = mutableMapOf()
         var nodesToFetch = mutableSetOf(rootNode)
         while (nodesToFetch.isNotEmpty()) {
@@ -29,6 +29,6 @@ class TreeController {
             }
         }
 
-        return Tree(rootNode, allConnections)
+        return TreeDTO(rootNode, allConnections)
     }
 }

@@ -3,7 +3,7 @@ package com.challenge.prewave.prewave_challenge
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
-import com.challenge.prewave.prewave_challenge.api.models.Edge
+import com.challenge.prewave.prewave_challenge.models.Edge
 import com.challenge.prewave.prewave_challenge.tables.references.EDGE
 import org.jooq.DSLContext
 import org.springframework.dao.DuplicateKeyException
