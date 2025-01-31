@@ -33,11 +33,7 @@ class CreateEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
 
     @Test
     fun `Returns bad request when fromNode value is missing`() {
-        val body = """
-                {
-                    "fromNode": 1
-                }
-            """
+        val body = """{"fromNode": 1}"""
         sendPostRequest(body).andExpect {
             status { isBadRequest() }
         }

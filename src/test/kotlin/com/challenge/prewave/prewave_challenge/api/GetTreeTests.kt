@@ -27,7 +27,7 @@ class GetTreeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
         edgeService.createEdge(1, 3)
         edgeService.createEdge(2, 4)
         edgeService.createEdge(2, 5)
-        edgeService.createEdge(3, 6)
+        edgeService.createEdge(3, 1)
         val rootNode = 1
         val expectedResponseBody = """
             {
@@ -35,7 +35,7 @@ class GetTreeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
                 "connections": {
                     "$rootNode": [2, 3],
                     "2": [4, 5],
-                    "3": [6]
+                    "3": [1]
                 }
             }
         """

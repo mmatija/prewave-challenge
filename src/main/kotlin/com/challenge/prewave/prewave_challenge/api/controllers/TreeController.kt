@@ -21,7 +21,7 @@ class TreeController {
         val allConnections: MutableMap<Int, List<Int>> = mutableMapOf()
         var nodesToFetch = mutableSetOf(rootNode)
         while (nodesToFetch.isNotEmpty()) {
-            val connections = edgeService.getConnectedNodes(nodesToFetch.toList())
+            val connections = edgeService.getConnectedNodes(nodesToFetch.filter { n -> !allConnections.containsKey(n) }.toList())
             nodesToFetch = mutableSetOf()
             connections.forEach { (k, v) ->
                 allConnections[k] = v
