@@ -1,12 +1,13 @@
 package com.challenge.prewave.prewave_challenge.services
 
 import com.challenge.prewave.prewave_challenge.BaseTest
-import com.challenge.prewave.prewave_challenge.services.TreeService
 import com.challenge.prewave.prewave_challenge.repositories.PersistentEdgeRepository
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsException
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
+import com.challenge.prewave.prewave_challenge.api.errors.UnexpectedException
 import com.challenge.prewave.prewave_challenge.models.Edge
+import com.challenge.prewave.prewave_challenge.repositories.EdgeRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,6 +38,12 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
     }
 
     @Test
+    fun `connectNodes raises an exception if there is a problem with database`() {
+        val treeService = TreeService(edgeRepository = BrokenEdgeRepository())
+        assertThrows<UnexpectedException> { treeService.connectNodes(1, 2) }
+    }
+
+    @Test
     fun `disconnectNodes removes the given edge`() {
         treeService.connectNodes(1, 2)
         treeService.disconnectNodes(1,2)
@@ -47,6 +54,12 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
     @Test
     fun `disconnectNodes raises an exception if edge does not exist`() {
         assertThrows<EdgeDoesNotExistException> { treeService.disconnectNodes(1,2) }
+    }
+
+    @Test
+    fun `disconnectNodes raises an exception if there is a problem with database`() {
+        val treeService = TreeService(edgeRepository = BrokenEdgeRepository())
+        assertThrows<UnexpectedException> { treeService.disconnectNodes(1,2) }
     }
 
     @Test
@@ -81,4 +94,26 @@ class TreeServiceTest(@Autowired edgeRepository: PersistentEdgeRepository): Base
         val expectedResult = emptyMap<Int, List<Int>>()
         assertEquals(expectedResult, connectedNodes)
     }
+
+    @Test
+    fun `getTree raises an exception if there is a problem with database`() {
+        val treeService = TreeService(edgeRepository = BrokenEdgeRepository())
+        assertThrows<UnexpectedException> { treeService.getTree(1) }
+    }
+
+    class BrokenEdgeRepository: EdgeRepository {
+        override fun create(fromId: Int, toId: Int) {
+            throw RuntimeException()
+        }
+
+        override fun delete(fromId: Int, toId: Int): Boolean {
+            throw RuntimeException()
+        }
+
+        override fun findByFromIds(ids: Collection<Int>): Map<Int, List<Int>> {
+            throw RuntimeException()
+        }
+
+    }
+
 }
