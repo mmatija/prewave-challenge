@@ -35,7 +35,7 @@ class DeleteEdgeTests(@Autowired val mockMvc: MockMvc) : BaseTest() {
     }
 
     @Test
-    fun `Returns status code 422 when trying to delte edge which does not exist`() {
+    fun `Returns status code 422 when trying to delete edge which does not exist`() {
         sendDeleteRequest(1, 2).andExpect { status { isUnprocessableEntity() } }
     }
 

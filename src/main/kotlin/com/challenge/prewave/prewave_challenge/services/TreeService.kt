@@ -28,13 +28,14 @@ class TreeService(val edgeRepository: EdgeRepository) {
     }
 
     fun disconnectNodes(fromNode: Int, toNode: Int) {
+        val result: Boolean
         try {
-            val result = edgeRepository.delete(fromNode, toNode)
-            if (!result) {
-                throw EdgeDoesNotExistException("Edge from node $fromNode to node $toNode does not exist")
-            }
+            result = edgeRepository.delete(fromNode, toNode)
         } catch (ex: Exception) {
             throw UnexpectedException("An unexpected error happened")
+        }
+        if (!result) {
+            throw EdgeDoesNotExistException("Edge from node $fromNode to node $toNode does not exist")
         }
     }
 
