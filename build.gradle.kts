@@ -22,7 +22,7 @@ jooq {
 
     jdbc {
       driver = "org.postgresql.Driver"
-      url = "jdbc:postgresql://localhost:${System.getenv("DATABASE_PORT") ?: "5432"}/${System.getenv("DATABASE_NAME") ?: "test"}"
+      url = "jdbc:postgresql://${System.getenv("DATABASE_HOST") ?: "localhost"}:${System.getenv("DATABASE_PORT") ?: "5432"}/${System.getenv("DATABASE_NAME") ?: "test"}"
       user = System.getenv("DATABASE_USERNAME") ?: "test"
       password = System.getenv("DATABASE_PASSWORD") ?: "test"
     }
