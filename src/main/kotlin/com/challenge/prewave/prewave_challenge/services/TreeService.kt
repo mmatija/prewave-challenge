@@ -4,12 +4,12 @@ import com.challenge.prewave.prewave_challenge.api.errors.EdgeAlreadyExistsExcep
 import com.challenge.prewave.prewave_challenge.api.errors.EdgeDoesNotExistException
 import com.challenge.prewave.prewave_challenge.api.errors.SourceAndDestinationNodesSameException
 import com.challenge.prewave.prewave_challenge.models.Edge
-import com.challenge.prewave.prewave_challenge.repositories.PersistentEdgeRepository
+import com.challenge.prewave.prewave_challenge.repositories.EdgeRepository
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 
 @Service
-class TreeService(val edgeRepository: PersistentEdgeRepository) {
+class TreeService(val edgeRepository: EdgeRepository) {
 
     fun connectNodes(fromNode: Int, toNode: Int): Edge {
         if (fromNode == toNode) {
